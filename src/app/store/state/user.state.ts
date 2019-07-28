@@ -1,11 +1,11 @@
 import { IUser } from 'src/app/models/user.interface';
 
 export interface IUserState {
-    user: IUser[];
+    users: IUser[];
     selectedUser: IUser;
 }
 
-export const initialUserState: IUserState ={
-    user: null,
+export const initialUserState: IUserState = {
+    users: null,
     selectedUser: null
 }
