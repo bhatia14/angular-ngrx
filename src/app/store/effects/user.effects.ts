@@ -1,20 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Effect, ofType, Actions } from '@ngrx/effects';
+import { GetUser, GetUserSuccess, EUserActions, GetUsersSuccess } from '../actions/user.actions';
+import { UserService } from 'src/app/services/user.service';
 import { Store, select } from '@ngrx/store';
+import { IAppState } from '../state/app.state';
 import { of } from 'rxjs';
 import { switchMap, map, withLatestFrom } from 'rxjs/operators';
-
-import { IAppState } from '../state/app.state';
-import {
-  GetUsersSuccess,
-  EUserActions,
-  GetUserSuccess,
-  GetUser,
-  GetUsers
-} from '../actions/user.actions';
-import { UserService } from '../../services/user.service';
-import { IUserHttp } from '../../models/http-models/user-http.interface';
-import { selectUserList } from '../selectors/user.selector';
+import { IUserHttp } from 'src/app/models/http-models/user-http.interface';
+import { selectUserList } from '../selectors/user.selectors';
 
 @Injectable()
 export class UserEffects {
@@ -29,16 +22,15 @@ export class UserEffects {
     })
   );
 
-  @Effect()
   getUsers$ = this._actions$.pipe(
-    ofType<GetUsers>(EUserActions.GetUsers),
-    switchMap(() => this._userService.getUsers()),
-    switchMap((userHttp: IUserHttp) => of(new GetUsersSuccess(userHttp.users)))
+   ofType<GetUser>(EUserActions.GetUser),
+   switchMap(() => this._userService.getUsers()),
+   switchMap((userHttp: IUserHttp) => of(new GetUsersSuccess(userHttp.users)))
   );
 
   constructor(
-    private _userService: UserService,
-    private _actions$: Actions,
+    private _userService: UserService, 
+    private _actions$: Actions, 
     private _store: Store<IAppState>
-  ) {}
+    ){}
 }

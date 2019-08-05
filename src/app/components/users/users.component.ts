@@ -1,6 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { IUser } from '../../models/user.interface';
+import { GetUsers } from 'src/app/store/actions/user.actions';
+import { Store } from '@ngrx/store';
+import { IAppState } from 'src/app/store/state/app.state';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -13,11 +17,14 @@ export class UsersComponent implements OnInit {
   @Output()
   userSelected: EventEmitter<number> = new EventEmitter();
 
-  constructor() {}
+  constructor(private _store: Store<IAppState>, private _router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this._store.dispatch(new GetUsers());
+  }
 
   navigateToUser(id: number) {
-    this.userSelected.emit(id);
+    //this.userSelected.emit(id);
+    this._router.navigate(['user', id]);
   }
 }
